@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser= require("body-parser")
+const date = require(__dirname + "/date.js")
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}))
 var items = ["Eat","Sleep","Study"];
@@ -9,13 +10,7 @@ app.use(express.static("public"))
 
 app.get('/', (req, res) => {
 
-  var today = new Date();
-  var options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long"
-  }
-  var day = today.toLocaleDateString("en-US", options)
+  var day = date.getDate();
   res.render('list', {itemTitle: day, newListItems: items});
 });
 
@@ -41,6 +36,6 @@ app.get("/about", (req, res) => {
    res.render('about')
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || "3000", () => {
     console.log('server started on 3000')
 });
